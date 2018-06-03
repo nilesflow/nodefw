@@ -1,6 +1,6 @@
 'use strict';
 
-const error = require('../error');
+const error = require('./error');
 const http = require('../../libs/http');
 
 /*

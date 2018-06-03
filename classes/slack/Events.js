@@ -1,7 +1,7 @@
 'use strict';
 
 const Web = require('./Web');
-const error = require('../error');
+const error = require('./error');
 
 /**
  * @see https://api.slack.com/events-api
@@ -142,12 +142,20 @@ class Events {
      * @see https://api.slack.com/events-api#receiving_events
      */
     async receive(event) {
-        console.log(event.event);
-        console.log(event.event.type);
 
         if (event.token != this.verify_token) {
             throw new error.ParamError('invalid token.');
         }
+        // @see https://api.slack.com/events-api
+        if (event.challenge) {
+            if (event.type == 'url_verification') {
+                return { challenge: event.challenge };
+            }
+        }
+        
+        console.log(event.event);
+        console.log(event.event.type);
+
         switch (event.event.type) {
             // public channel's
             case 'channel_created':
@@ -193,6 +201,8 @@ class Events {
             default:
                 break;
         }
+        
+        return { result: 'ok'};
     }
 }
 

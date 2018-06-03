@@ -28,7 +28,7 @@ class Bot {
      * slackイベントの受信
      */
     async receiveEvent(event) {
-        await this.events.receive(event);
+        return await this.events.receive(event);
     }
 }
 
