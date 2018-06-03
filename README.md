@@ -1,7 +1,10 @@
 # nodefw
 framework for Node.js
 
-node.js 8.10以上
+node.js 8.10以上  
+
+# 環境
+Lambda
 
 ## 機能
 * HTTP Client
