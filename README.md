@@ -4,7 +4,8 @@ framework for Node.js
 node.js 8.10以上  
 
 # 環境
-Lambda
+Lambda  
+※ 以外は未検証
 
 ## 機能
 * HTTP Client
