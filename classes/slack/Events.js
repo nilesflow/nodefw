@@ -14,6 +14,23 @@ class Events {
     }
 
     /**
+     * user profileから名前取得
+     * display_nameがあれば、優先。@付きで返す
+     * なければ、real_name
+     */
+    get_name(profile) {
+        let name = '';
+        if (profile.display_name) {
+            name = '@' + profile.display_name;
+        }
+        else {
+            name = '@' + profile.real_name;
+        }
+
+        return name;
+    }
+
+    /**
      *  @see https://api.slack.com/events/channel_created
      */
     async channel_created(event) {
@@ -24,7 +41,7 @@ class Events {
         let profile = await this.web.usersProfileGet(event.channel.creator);
         console.log(profile);
 
-        let text = `@${profile.display_name} が、パブリックチャンネルを作成しました！\n` 
+        let text = this.get_name(profile) + `が、パブリックチャンネルを作成しました！\n` 
          + `チャンネル名：#${event.channel.name}\n`
          + `チャンネルの目的：${purpose}`;
         await this.web.chatPostMessage(text);
@@ -66,7 +83,7 @@ class Events {
         let profile = await this.web.usersProfileGet(event.user);
         console.log(profile);
 
-        let text = `@${profile.display_name} が、パブリックチャンネルをアーカイブしました。\n` 
+        let text = this.get_name(profile) + `が、パブリックチャンネルをアーカイブしました。\n` 
          + `チャンネル名：#${channel.name}`;
         await this.web.chatPostMessage(text);
     }
@@ -81,7 +98,7 @@ class Events {
         let profile = await this.web.usersProfileGet(event.user);
         console.log(profile);
 
-        let text = `@${profile.display_name} が、パブリックチャンネルをアーカイブから復元しました。\n` 
+        let text = this.get_name(profile) + `が、パブリックチャンネルをアーカイブから復元しました。\n` 
          + `チャンネル名：#${channel.name}`;
         await this.web.chatPostMessage(text);
     }
@@ -93,7 +110,7 @@ class Events {
         let profile = await this.web.usersProfileGet(event.user);
         console.log(profile);
 
-        let text = `@${profile.display_name} が、プライベートチャンネルを作成しました！\n` 
+        let text = this.get_name(profile) + `が、プライベートチャンネルを作成しました！\n` 
          + `チャンネル名：${event.channel.name}`;
         await this.web.chatPostMessage(text);
     }
@@ -105,7 +122,7 @@ class Events {
         let profile = await this.web.usersProfileGet(event.user);
         console.log(profile);
 
-        let text = '@${profile.display_name} が、プライベートチャンネルがクローズしました。\n'
+        let text = this.get_name(profile) + `が、プライベートチャンネルがクローズしました。\n`
             + 'チャンネルID：' + event.channel + '\n'
             + '※チャンネル情報は既に取得できません。';
         await this.web.chatPostMessage(text);
