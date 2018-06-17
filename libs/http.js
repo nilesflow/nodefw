@@ -19,7 +19,7 @@ exports.request = (options, data = null, qs = null) => {
             options.path += "?" + querystring.stringify(qs);
         }
 
-        let req = https.request(options, (res) => {
+        const req = https.request(options, (res) => {
             console.log('STATUS: ' + res.statusCode);
             console.log('HEADERS: ' + JSON.stringify(res.headers));
     
@@ -28,7 +28,7 @@ exports.request = (options, data = null, qs = null) => {
                 console.error('problem with request: ' + e.message);
                 reject(e);
             });
-            res.on('data', async (chunk) => {
+            res.on('data', (chunk) => {
                 console.log('BODY: ' + chunk);
                 resolve(chunk);
             });
